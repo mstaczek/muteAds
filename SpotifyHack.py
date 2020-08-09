@@ -54,10 +54,11 @@ def main():
         # mute if app is named 'Spotify' or 'Advertisement'
         # unmute Spotify if an app is named as 'Spotify Free' or else
         if "Advertisement" in titles or "Spotify" in titles:
-            adWasFound(True)
-            is_muted = True
-            waiting_time = SLEEP_TIME_DURING_AD
-            time.sleep(5)  # because usual adds have around 15s to 30s
+            if not is_muted:
+                adWasFound(True)
+                is_muted = True
+                waiting_time = SLEEP_TIME_DURING_AD
+                time.sleep(5)  # because usual adds have around 15s to 30s
         elif is_muted:
             ads_muted_counter += 1
             print("Total muted ads:", ads_muted_counter)

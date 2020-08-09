@@ -47,13 +47,9 @@ def main():
     SLEEP_TIME_DURING_AD = 1
     waiting_time = SLEEP_TIME_NO_AD
     ads_muted_counter = 0
-    iter_counter = 0
-    titles = getTitles()
     is_muted = False
     while True:
-        if iter_counter == 10:  # each 10*SLEEP_TIME seconds
-            iter_counter = 0
-            titles = getTitles()  # update titles
+        titles = getTitles()  # update titles
 
         # mute if app is named 'Spotify' or 'Advertisement'
         # unmute Spotify if an app is named as 'Spotify Free' or else
@@ -64,11 +60,11 @@ def main():
             time.sleep(5)  # because usual adds have around 15s to 30s
         elif is_muted:
             ads_muted_counter += 1
-            print("Total muted ads:")
+            print("Total muted ads:", ads_muted_counter)
             waiting_time = SLEEP_TIME_NO_AD
             adWasFound(False)
+            is_muted = False
 
-        iter_counter += 1
         time.sleep(waiting_time)  # Sleep between checks (in seconds)
 
 

@@ -1,2 +1,2 @@
-# muteAds
-The aim is to mute Spotify when it starts playing ads.
+# Mute Spotify app on Windows
+Python script which mutes Spotify app when ad starts playing with example of .bat script launching Spotify and this script - it's possible to create a shortcut to this .bat script and pin is to bottom taskbar.

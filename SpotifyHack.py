@@ -1,27 +1,23 @@
-import ctypes  # find process title
-import time  # for sleep
-from pycaw.pycaw import AudioUtilities  # mute
+import ctypes
+import time
+from pycaw.pycaw import AudioUtilities
 
 
 def findSpotifyAppSession():
     sessions = AudioUtilities.GetAllSessions()
-    for t in sessions:
-        if "name='Spotify.exe'" in t.Process.__str__():
-            return t
+    for session in sessions:
+        if "name='Spotify.exe'" in session.Process.__str__():
+            return session
 
-
-def adWasFound(b):  # b - true if found, false otherwise
+def adWasFound(wasFound):  
     spotify_volume = findSpotifyAppSession().SimpleAudioVolume
-    if (b):
+    if wasFound:
         print("Ad found - muting")
         spotify_volume.SetMute(1, None)
     else:
         spotify_volume.SetMute(0, None)
 
-
-# not mine magic ;P
 def getTitles():
-    ####### Modules to gather data
     EnumWindows = ctypes.windll.user32.EnumWindows
     EnumWindowsProc = ctypes.WINFUNCTYPE(ctypes.c_bool, ctypes.POINTER(ctypes.c_int), ctypes.POINTER(ctypes.c_int))
     GetWindowText = ctypes.windll.user32.GetWindowTextW
@@ -40,7 +36,6 @@ def getTitles():
     EnumWindows(EnumWindowsProc(foreach_window), 0)
     return titles
 
-
 def main():
     print("Running, to stop just close the window ;)")
     SLEEP_TIME_NO_AD = 4  # in seconds, time between each check for ad
@@ -58,7 +53,7 @@ def main():
                 adWasFound(True)
                 is_muted = True
                 waiting_time = SLEEP_TIME_DURING_AD
-                time.sleep(5)  # because usual adds have around 15s to 30s
+                time.sleep(5)
         elif is_muted:
             ads_muted_counter += 1
             print("Total muted ads:", ads_muted_counter)
@@ -67,7 +62,6 @@ def main():
             is_muted = False
 
         time.sleep(waiting_time)  # Sleep between checks (in seconds)
-
 
 if __name__ == '__main__':
     main()
